@@ -10,6 +10,11 @@ local defaults = {
   },
   cursor_column = true,
   max_file_size = 50 * 1024 * 1024,
+  dictionary = {
+    enabled = true,
+    auto_download = false,
+  },
+  plddt = true,
 }
 
 M.config = vim.deepcopy(defaults)
@@ -70,10 +75,48 @@ function M.setup(opts)
     end,
   })
 
-  -- User command
+  -- User commands
   vim.api.nvim_create_user_command("MmcifGoToCategory", function()
     require("mmcif-rainbow.picker").show()
   end, { desc = "Jump to mmCIF category" })
+
+  vim.api.nvim_create_user_command("MmcifDownloadDictionary", function()
+    require("mmcif-rainbow.dictionary").download()
+  end, { desc = "Download mmCIF dictionary for hover" })
+
+  -- Hover keymap for mmcif buffers
+  if M.config.dictionary.enabled then
+    vim.api.nvim_create_autocmd("FileType", {
+      group = augroup,
+      pattern = "mmcif",
+      callback = function(ev)
+        vim.keymap.set("n", "K", function()
+          require("mmcif-rainbow.hover").show()
+        end, { buffer = ev.buf, desc = "mmCIF hover" })
+      end,
+    })
+  end
+
+  -- pLDDT coloring
+  if M.config.plddt then
+    local plddt = require("mmcif-rainbow.plddt")
+    plddt.setup_highlights()
+
+    vim.api.nvim_create_autocmd({ "BufEnter", "TextChanged", "TextChangedI" }, {
+      group = augroup,
+      pattern = { "*.cif", "*.mmcif" },
+      callback = function(ev)
+        plddt.update(ev.buf)
+      end,
+    })
+
+    vim.api.nvim_create_autocmd("ColorScheme", {
+      group = augroup,
+      callback = function()
+        plddt.setup_highlights()
+      end,
+    })
+  end
 end
 
 return M
