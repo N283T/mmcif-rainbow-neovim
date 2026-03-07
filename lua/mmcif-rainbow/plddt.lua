@@ -79,7 +79,7 @@ function M.update(buf)
             pcall(vim.api.nvim_buf_set_extmark, buf, ns, data_row.line, vr.start, {
               end_col = vr.start + vr.length,
               hl_group = hl_group,
-              priority = 200,
+              priority = 10000,
             })
           end
         end
