@@ -1,0 +1,24 @@
+# Lua byte-compiled files
+*.luac
+
+# Neovim swap / undo / session
+*.swp
+*.swo
+*~
+Session.vim
+.netrwhist
+
+# macOS
+.DS_Store
+
+# Editor project files
+.idea/
+.vscode/
+*.code-workspace
+
+# Tags
+tags
+
+# Test artifacts
+luacov.stats.out
+luacov.report.out
