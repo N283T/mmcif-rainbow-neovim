@@ -65,11 +65,10 @@ local function item_hover(category_name, field_name, dict_type)
     lines[#lines + 1] = "Category : `" .. clean .. "`"
   end
   lines[#lines + 1] = ""
-    "Attribute : `" .. field_name .. "`",
-    "",
-    "---",
-    "",
-  }
+  lines[#lines + 1] = "Attribute : `" .. field_name .. "`"
+  lines[#lines + 1] = ""
+  lines[#lines + 1] = "---"
+  lines[#lines + 1] = ""
 
   local item_def = dictionary.get_item(category_name, field_name, dict_type)
   if item_def and item_def.description ~= "" then
