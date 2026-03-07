@@ -1,16 +1,23 @@
 # mmcif-rainbow.nvim
 
-Rainbow column highlighting for mmCIF files in Neovim.
+Rainbow column highlighting for mmCIF (Macromolecular Crystallographic Information File) files in Neovim.
 
 A Neovim port of [mmcif-rainbow-vscode](https://github.com/nagaet/mmcif-rainbow-vscode), using Lua parser and extmarks for accurate, performant highlighting.
 
+<!-- TODO: Add screenshot -->
+
 ## Features
 
-- Rainbow highlighting for data columns in mmCIF `loop_` sections
-- Cursor column highlight to visually track the current column
-- Category navigation with `:MmcifGoToCategory`
+- Rainbow column highlighting (9 cycling colors + category color)
+- Cursor column highlighting
+- Category navigation (`:MmcifGoToCategory`) with Telescope support
+- Configurable colors
 - Automatic filetype detection for `.cif` and `.mmcif` files
-- Configurable colors and file size limit
+
+## Requirements
+
+- Neovim >= 0.9.0
+- [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) (optional, for enhanced category picker)
 
 ## Installation
 
@@ -18,8 +25,8 @@ A Neovim port of [mmcif-rainbow-vscode](https://github.com/nagaet/mmcif-rainbow-
 
 ```lua
 {
-  "nagaet/mmcif-rainbow.nvim",
-  ft = "mmcif",
+  'N283T/mmcif-rainbow-neovim',
+  ft = { 'mmcif' },
   opts = {},
 }
 ```
@@ -52,6 +59,18 @@ require("mmcif-rainbow").setup({
 | Command | Description |
 |---------|-------------|
 | `:MmcifGoToCategory` | Jump to a category definition by name |
+
+When Telescope is available, the picker uses a Telescope dropdown. Otherwise it falls back to `vim.ui.select`.
+
+## Highlight Groups
+
+The following highlight groups can be overridden by colorscheme authors:
+
+| Group | Description |
+|-------|-------------|
+| `MmcifRainbow1` - `MmcifRainbow9` | Rainbow colors for data columns (cycling) |
+| `MmcifRainbow10` | Category name color |
+| `MmcifCursorColumn` | Cursor column highlight |
 
 ## Credits
 
