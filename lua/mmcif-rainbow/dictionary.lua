@@ -11,6 +11,7 @@ local DICT_FILES = {
 }
 
 local loaded = {}
+local downloading = false
 
 function M.data_dir()
   return vim.fn.stdpath("data") .. "/mmcif-rainbow"
@@ -25,6 +26,12 @@ function M.is_downloaded(dict_type)
 end
 
 function M.download(callback)
+  if downloading then
+    vim.notify("Dictionary download already in progress.", vim.log.levels.WARN)
+    return
+  end
+  downloading = true
+
   local dir = M.data_dir()
   vim.fn.mkdir(dir, "p")
 
@@ -38,24 +45,23 @@ function M.download(callback)
     vim.system(
       { "curl", "-fsSL", "-o", output_path, url },
       {},
-      function(result)
+      vim.schedule_wrap(function(result)
         if result.code ~= 0 then
           errors[#errors + 1] = string.format("%s: %s", dict_type, result.stderr or "download failed")
         end
         remaining = remaining - 1
         if remaining == 0 then
-          vim.schedule(function()
-            if #errors > 0 then
-              local err_msg = table.concat(errors, "; ")
-              vim.notify("Dictionary download failed: " .. err_msg, vim.log.levels.ERROR)
-              if callback then callback(err_msg) end
-            else
-              vim.notify("Dictionary downloaded successfully.", vim.log.levels.INFO)
-              if callback then callback(nil) end
-            end
-          end)
+          downloading = false
+          if #errors > 0 then
+            local err_msg = table.concat(errors, "; ")
+            vim.notify("Dictionary download failed: " .. err_msg, vim.log.levels.ERROR)
+            if callback then callback(err_msg) end
+          else
+            vim.notify("Dictionary downloaded successfully.", vim.log.levels.INFO)
+            if callback then callback(nil) end
+          end
         end
-      end
+      end)
     )
   end
 end

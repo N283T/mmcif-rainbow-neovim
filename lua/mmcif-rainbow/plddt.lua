@@ -20,10 +20,18 @@ function M.setup_highlights()
   vim.api.nvim_set_hl(0, "MmcifPlddtVeryLow", { default = true, fg = COLORS.VERY_LOW, bold = true })
 end
 
+local function get_dict_type(buf)
+  local cached = vim.b[buf].mmcif_dict_type
+  if cached then return cached end
+  local dt = dictionary.detect_type(buf)
+  vim.b[buf].mmcif_dict_type = dt
+  return dt
+end
+
 function M.update(buf)
   vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
 
-  local dict_type = dictionary.detect_type(buf)
+  local dict_type = get_dict_type(buf)
   if dict_type ~= "mmcif_ma" then return end
 
   local changedtick = vim.api.nvim_buf_get_changedtick(buf)

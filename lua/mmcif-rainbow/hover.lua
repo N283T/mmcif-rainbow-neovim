@@ -3,20 +3,34 @@ local dictionary = require("mmcif-rainbow.dictionary")
 
 local M = {}
 
-local function category_hover(category_name, dict_type)
-  local clean = category_name:gsub("^_", "")
-  local url = string.format(
+local function doc_url(dict_type, clean, field_name)
+  if dict_type ~= "mmcif_pdbx" then return nil end
+  if field_name then
+    return string.format(
+      "https://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v50.dic/Items/_%s.%s.html", clean, field_name
+    )
+  end
+  return string.format(
     "https://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v50.dic/Categories/%s.html", clean
   )
+end
+
+local function category_hover(category_name, dict_type)
+  local clean = category_name:gsub("^_", "")
+  local url = doc_url(dict_type, clean)
 
   local lines = {
     "### " .. category_name,
     "",
-    "[Online Documentation](" .. url .. ")",
-    "",
-    "---",
-    "",
   }
+
+  if url then
+    lines[#lines + 1] = "[Online Documentation](" .. url .. ")"
+    lines[#lines + 1] = ""
+  end
+
+  lines[#lines + 1] = "---"
+  lines[#lines + 1] = ""
 
   local cat_def = dictionary.get_category(category_name, dict_type)
   if cat_def and cat_def.description ~= "" then
@@ -29,22 +43,28 @@ end
 local function item_hover(category_name, field_name, dict_type)
   local full_tag = category_name .. "." .. field_name
   local clean = category_name:gsub("^_", "")
-  local item_url = string.format(
-    "https://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v50.dic/Items/_%s.%s.html", clean, field_name
-  )
-  local cat_url = string.format(
-    "https://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v50.dic/Categories/%s.html", clean
-  )
+  local item_url = doc_url(dict_type, clean, field_name)
+  local cat_url = doc_url(dict_type, clean)
 
   local lines = {
     "### " .. full_tag,
     "",
-    "[Online Documentation](" .. item_url .. ")",
-    "",
-    "---",
-    "",
-    "Category : [`" .. clean .. "`](" .. cat_url .. ")",
-    "",
+  }
+
+  if item_url then
+    lines[#lines + 1] = "[Online Documentation](" .. item_url .. ")"
+    lines[#lines + 1] = ""
+  end
+
+  lines[#lines + 1] = "---"
+  lines[#lines + 1] = ""
+
+  if cat_url then
+    lines[#lines + 1] = "Category : [`" .. clean .. "`](" .. cat_url .. ")"
+  else
+    lines[#lines + 1] = "Category : `" .. clean .. "`"
+  end
+  lines[#lines + 1] = ""
     "Attribute : `" .. field_name .. "`",
     "",
     "---",
