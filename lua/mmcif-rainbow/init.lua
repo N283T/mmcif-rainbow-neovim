@@ -31,14 +31,6 @@ function M.setup(opts)
   -- Define highlight groups
   highlighter.setup_highlights()
 
-  -- Re-apply highlights on colorscheme change
-  vim.api.nvim_create_autocmd("ColorScheme", {
-    group = augroup,
-    callback = function()
-      highlighter.setup_highlights()
-    end,
-  })
-
   -- Highlight on file open and changes
   vim.api.nvim_create_autocmd({ "BufEnter", "TextChanged", "TextChangedI" }, {
     group = augroup,
@@ -98,8 +90,8 @@ function M.setup(opts)
   end
 
   -- pLDDT coloring
-  if M.config.plddt then
-    local plddt = require("mmcif-rainbow.plddt")
+  local plddt = M.config.plddt and require("mmcif-rainbow.plddt") or nil
+  if plddt then
     plddt.setup_highlights()
 
     vim.api.nvim_create_autocmd({ "BufEnter", "TextChanged", "TextChangedI" }, {
@@ -109,14 +101,16 @@ function M.setup(opts)
         plddt.update(ev.buf)
       end,
     })
-
-    vim.api.nvim_create_autocmd("ColorScheme", {
-      group = augroup,
-      callback = function()
-        plddt.setup_highlights()
-      end,
-    })
   end
+
+  -- Re-apply highlights on colorscheme change
+  vim.api.nvim_create_autocmd("ColorScheme", {
+    group = augroup,
+    callback = function()
+      highlighter.setup_highlights()
+      if plddt then plddt.setup_highlights() end
+    end,
+  })
 end
 
 return M

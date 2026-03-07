@@ -20,18 +20,15 @@ function M.setup_highlights()
   vim.api.nvim_set_hl(0, "MmcifPlddtVeryLow", { default = true, fg = COLORS.VERY_LOW, bold = true })
 end
 
-local function get_dict_type(buf)
-  local cached = vim.b[buf].mmcif_dict_type
-  if cached then return cached end
-  local dt = dictionary.detect_type(buf)
-  vim.b[buf].mmcif_dict_type = dt
-  return dt
-end
-
 function M.update(buf)
   vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
 
-  local dict_type = get_dict_type(buf)
+  local cfg = require("mmcif-rainbow").config
+  local line_count = vim.api.nvim_buf_line_count(buf)
+  local byte_count = vim.api.nvim_buf_get_offset(buf, line_count)
+  if byte_count > cfg.max_file_size then return end
+
+  local dict_type = dictionary.detect_type(buf)
   if dict_type ~= "mmcif_ma" then return end
 
   local changedtick = vim.api.nvim_buf_get_changedtick(buf)
@@ -51,16 +48,14 @@ function M.update(buf)
 
     if b_iso_col == -1 then goto next_block end
 
-    local line_cache = {}
+    local min_line = block.data_rows[1] and block.data_rows[1].line or 0
+    local max_line = block.data_rows[#block.data_rows].line
+    local all_lines = vim.api.nvim_buf_get_lines(buf, min_line, max_line + 1, false)
 
     for _, data_row in ipairs(block.data_rows) do
       for _, vr in ipairs(data_row.value_ranges) do
         if vr.column_index == b_iso_col and vr.length > 0 then
-          if not line_cache[data_row.line] then
-            local lines = vim.api.nvim_buf_get_lines(buf, data_row.line, data_row.line + 1, false)
-            line_cache[data_row.line] = lines[1] or ""
-          end
-          local line_text = line_cache[data_row.line]
+          local line_text = all_lines[data_row.line - min_line + 1] or ""
           local value_text = line_text:sub(vr.start + 1, vr.start + vr.length)
           local plddt = tonumber(value_text)
 
