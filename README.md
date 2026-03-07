@@ -68,9 +68,9 @@ The following highlight groups can be overridden by colorscheme authors:
 
 | Group | Description |
 |-------|-------------|
-| `MmcifRainbow1` - `MmcifRainbow9` | Rainbow colors for data columns (cycling) |
-| `MmcifRainbow10` | Category name color |
-| `MmcifCursorColumn` | Cursor column highlight |
+| `MmcifRainbow1` | Category prefix color (fixed) |
+| `MmcifRainbow2` - `MmcifRainbow10` | Cycling rainbow column colors |
+| `MmcifCursorColumn` | Cursor column background |
 
 ## Credits
 

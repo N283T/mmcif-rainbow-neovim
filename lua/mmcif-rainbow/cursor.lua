@@ -32,6 +32,8 @@ function M.update(buf, row, col)
               break
             end
           end
+        elseif data_row.line > row then
+          break  -- data rows are ordered, no need to continue
         end
         if target_col_index ~= -1 then break end
       end

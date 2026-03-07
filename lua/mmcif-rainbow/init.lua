@@ -43,20 +43,26 @@ function M.setup(opts)
     end,
   })
 
-  -- Cursor column highlight (debounced via CursorMoved)
+  -- Cursor column highlight
   if M.config.cursor_column then
+    local cursor_timer = vim.uv.new_timer()
     vim.api.nvim_create_autocmd("CursorMoved", {
       group = augroup,
       pattern = { "*.cif", "*.mmcif" },
       callback = function(ev)
-        local pos = vim.api.nvim_win_get_cursor(0)
-        cursor.update(ev.buf, pos[1] - 1, pos[2])
+        cursor_timer:stop()
+        cursor_timer:start(50, 0, vim.schedule_wrap(function()
+          if vim.api.nvim_buf_is_valid(ev.buf) then
+            local pos = vim.api.nvim_win_get_cursor(0)
+            cursor.update(ev.buf, pos[1] - 1, pos[2])
+          end
+        end))
       end,
     })
   end
 
   -- Clean up cache on buffer delete
-  vim.api.nvim_create_autocmd("BufDelete", {
+  vim.api.nvim_create_autocmd({ "BufDelete", "BufWipeout" }, {
     group = augroup,
     pattern = { "*.cif", "*.mmcif" },
     callback = function(ev)
