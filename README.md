@@ -11,6 +11,9 @@ A Neovim port of [mmcif-rainbow-vscode](https://github.com/nagaet/mmcif-rainbow-
 - Rainbow column highlighting (9 cycling colors + category color)
 - Cursor column highlighting
 - Category navigation (`:MmcifGoToCategory`) with Telescope support
+- Dictionary-backed hover tooltips (press `K` on categories, items, or values)
+- AlphaFold/ModelCIF pLDDT confidence coloring (auto-detected)
+- `:MmcifDownloadDictionary` command to download dictionary files
 - Configurable colors
 - Automatic filetype detection for `.cif` and `.mmcif` files
 
@@ -44,6 +47,11 @@ require("mmcif-rainbow").setup({
   },
   cursor_column = true,
   max_file_size = 50 * 1024 * 1024, -- 50 MB
+  dictionary = {
+    enabled = true,       -- Enable hover tooltips (default: true)
+    auto_download = false, -- Auto-download dictionary (default: false)
+  },
+  plddt = true,           -- pLDDT confidence coloring (default: true)
 })
 ```
 
@@ -53,12 +61,16 @@ require("mmcif-rainbow").setup({
 | `colors.rainbow` | 9 colors | Cycle of colors assigned to data columns |
 | `cursor_column` | `true` | Highlight the column under the cursor |
 | `max_file_size` | `52428800` | Skip highlighting for files larger than this (bytes) |
+| `dictionary.enabled` | `true` | Enable dictionary-backed hover tooltips |
+| `dictionary.auto_download` | `false` | Auto-download dictionary on first use |
+| `plddt` | `true` | Enable pLDDT confidence coloring for ModelCIF files |
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
 | `:MmcifGoToCategory` | Jump to a category definition by name |
+| `:MmcifDownloadDictionary` | Download dictionary files for hover documentation |
 
 When Telescope is available, the picker uses a Telescope dropdown. Otherwise it falls back to `vim.ui.select`.
 
@@ -71,6 +83,20 @@ The following highlight groups can be overridden by colorscheme authors:
 | `MmcifRainbow1` | Category prefix color (fixed) |
 | `MmcifRainbow2` - `MmcifRainbow10` | Cycling rainbow column colors |
 | `MmcifCursorColumn` | Cursor column background |
+| `MmcifPlddtVeryHigh` | pLDDT > 90 (dark blue) |
+| `MmcifPlddtHigh` | 70 < pLDDT <= 90 (light blue) |
+| `MmcifPlddtLow` | 50 < pLDDT <= 70 (yellow) |
+| `MmcifPlddtVeryLow` | pLDDT <= 50 (orange) |
+
+## Dictionary Hover
+
+Run `:MmcifDownloadDictionary` once to download the mmCIF dictionary and enable hover documentation. Press `K` on any category, item, or value to see its description in a floating window.
+
+The dictionary is downloaded from wwPDB and stored in `~/.local/share/nvim/mmcif-rainbow/`.
+
+## pLDDT Coloring
+
+pLDDT confidence coloring is auto-detected for ModelCIF files (AlphaFold predictions). When detected, `B_iso_or_equiv` values are highlighted using the AlphaFold color scheme based on confidence score ranges.
 
 ## Credits
 
