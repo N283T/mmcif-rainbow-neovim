@@ -396,3 +396,19 @@ describe("parse_blocks", function()
     assert.are.same({}, blocks)
   end)
 end)
+
+describe("parse_blocks with real file", function()
+  it("parses 2hhb.cif without error", function()
+    local path = vim.fn.fnamemodify("examples/2hhb.cif", ":p")
+    local lines = vim.fn.readfile(path)
+    local blocks = parser.parse_blocks(lines)
+    assert.is_true(#blocks > 0)
+
+    local categories = {}
+    for _, block in ipairs(blocks) do
+      categories[block.category_name] = true
+    end
+    assert.is_true(categories["_entry"] ~= nil)
+    assert.is_true(categories["_atom_site"] ~= nil)
+  end)
+end)
