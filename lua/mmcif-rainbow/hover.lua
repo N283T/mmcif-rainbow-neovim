@@ -20,7 +20,7 @@ local function category_hover(category_name, dict_type)
   local url = doc_url(dict_type, clean)
 
   local lines = {
-    "### " .. category_name,
+    "**" .. category_name .. "**",
     "",
   }
 
@@ -47,7 +47,7 @@ local function item_hover(category_name, field_name, dict_type)
   local cat_url = doc_url(dict_type, clean)
 
   local lines = {
-    "### " .. full_tag,
+    "**" .. full_tag .. "**",
     "",
   }
 
