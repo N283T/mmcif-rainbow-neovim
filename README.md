@@ -4,7 +4,7 @@ Rainbow column highlighting for mmCIF (Macromolecular Crystallographic Informati
 
 A Neovim port of [mmcif-rainbow-vscode](https://github.com/N283T/mmcif-rainbow-vscode), using Lua parser and extmarks for accurate, performant highlighting.
 
-<!-- TODO: Add screenshot -->
+![Overview](assets/rainbow_mmcif_nvim.gif)
 
 ## Features
 
@@ -16,6 +16,25 @@ A Neovim port of [mmcif-rainbow-vscode](https://github.com/N283T/mmcif-rainbow-v
 - `:MmcifDownloadDictionary` command to download dictionary files
 - Configurable colors
 - Automatic filetype detection for `.cif` and `.mmcif` files
+
+### Rainbow Highlighting
+
+![Highlighting](assets/highlight.png)
+
+### Hover Tooltips
+
+| Category | Item | Value |
+|----------|------|-------|
+| ![Category](assets/hover_category.png) | ![Item](assets/hover_item.png) | ![Value](assets/hover_value.png) |
+
+### Category Navigation
+
+![GoTo](assets/goto.png)
+![GoTo Search](assets/goto_search.png)
+
+### pLDDT Confidence Coloring
+
+![pLDDT](assets/plddt.png)
 
 ## Requirements
 
