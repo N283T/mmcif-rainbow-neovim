@@ -32,6 +32,7 @@ A Neovim port of [mmcif-rainbow-vscode](https://github.com/N283T/mmcif-rainbow-v
 {
   'N283T/mmcif-rainbow-neovim',
   ft = { 'mmcif' },
+  cmd = { 'MmcifDownloadDictionary', 'MmcifGoToCategory' },
   opts = {},
 }
 ```
