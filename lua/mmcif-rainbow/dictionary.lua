@@ -127,7 +127,11 @@ function M.load(dict_type)
     if cat_id then
       local desc = frame["_category.description"]
       if type(desc) == "table" then desc = table.concat(desc, "\n") end
-      categories[cat_id] = categories[cat_id] or { description = desc or "", items = {} }
+      if not categories[cat_id] then
+        categories[cat_id] = { description = desc or "", items = {} }
+      else
+        categories[cat_id].description = desc or ""
+      end
     end
 
     local raw_names = frame["_item.name"]
