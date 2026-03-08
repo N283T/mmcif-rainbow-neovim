@@ -6,6 +6,18 @@ A Neovim port of [mmcif-rainbow-vscode](https://github.com/N283T/mmcif-rainbow-v
 
 ![Overview](assets/rainbow_mmcif_nvim.gif)
 
+## Quick Start
+
+```lua
+-- lazy.nvim
+{
+  'N283T/mmcif-rainbow-neovim',
+  ft = { 'mmcif' },
+  cmd = { 'MmcifDownloadDictionary', 'MmcifGoToCategory' },
+  opts = {},
+}
+```
+
 ## Features
 
 - Rainbow column highlighting (9 cycling colors + category color)
