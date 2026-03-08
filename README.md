@@ -2,7 +2,7 @@
 
 Rainbow column highlighting for mmCIF (Macromolecular Crystallographic Information File) files in Neovim.
 
-A Neovim port of [mmcif-rainbow-vscode](https://github.com/nagaet/mmcif-rainbow-vscode), using Lua parser and extmarks for accurate, performant highlighting.
+A Neovim port of [mmcif-rainbow-vscode](https://github.com/N283T/mmcif-rainbow-vscode), using Lua parser and extmarks for accurate, performant highlighting.
 
 <!-- TODO: Add screenshot -->
 
