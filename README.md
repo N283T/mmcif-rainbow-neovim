@@ -1,4 +1,4 @@
-# mmcif-rainbow.nvim
+# Rainbow mmCIF (Neovim)
 
 Rainbow column highlighting for mmCIF (Macromolecular Crystallographic Information File) files in Neovim.
 
