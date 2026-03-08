@@ -127,6 +127,8 @@ pLDDT confidence coloring is auto-detected for ModelCIF files (AlphaFold predict
 ## Credits
 
 - [mmcif-rainbow](https://marketplace.visualstudio.com/items?itemName=N283T.mmcif-rainbow) -- the original VSCode extension this plugin is ported from
+- [rainbow_csv.nvim](https://github.com/cameron-wags/rainbow_csv.nvim) -- inspired by its Neovim-native rainbow column approach
+- [rainbow_csv](https://github.com/mechatroner/rainbow_csv) -- the original rainbow CSV plugin for Vim
 
 ## License
 
