@@ -24,6 +24,8 @@ A Neovim port of [mmcif-rainbow-vscode](https://github.com/nagaet/mmcif-rainbow-
 
 ## Installation
 
+> **Note:** This plugin requires **Neovim** (not Vim). It uses Neovim-specific APIs (extmarks, `vim.system`, etc.).
+
 ### lazy.nvim
 
 ```lua
@@ -32,6 +34,30 @@ A Neovim port of [mmcif-rainbow-vscode](https://github.com/nagaet/mmcif-rainbow-
   ft = { 'mmcif' },
   opts = {},
 }
+```
+
+### packer.nvim
+
+```lua
+use {
+  'N283T/mmcif-rainbow-neovim',
+  config = function()
+    require('mmcif-rainbow').setup()
+  end,
+}
+```
+
+### Others (vim-plug, mini.deps, rocks.nvim, etc.)
+
+Any Neovim-compatible plugin manager works. For example with vim-plug:
+
+```vim
+Plug 'N283T/mmcif-rainbow-neovim'
+```
+
+```lua
+-- After plugin is loaded
+require('mmcif-rainbow').setup()
 ```
 
 ## Configuration
@@ -100,7 +126,7 @@ pLDDT confidence coloring is auto-detected for ModelCIF files (AlphaFold predict
 
 ## Credits
 
-- [mmcif-rainbow-vscode](https://github.com/nagaet/mmcif-rainbow-vscode) -- the original VSCode extension this plugin is ported from
+- [mmcif-rainbow](https://marketplace.visualstudio.com/items?itemName=N283T.mmcif-rainbow) -- the original VSCode extension this plugin is ported from
 
 ## License
 
